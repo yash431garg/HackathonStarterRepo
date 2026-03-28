@@ -121,6 +121,31 @@ class ApiClient {
     return this.fetch(`/events/history?limit=${limit}`)
   }
 
+  // AI CEO
+  async analyzeStore(): Promise<any> {
+    return this.fetch('/ai/analyze')
+  }
+
+  // Traffic sources
+  async trackSource(source: string): Promise<any> {
+    return this.fetch('/analytics/track-source', {
+      method: 'POST',
+      body: JSON.stringify({ source }),
+    })
+  }
+
+  async getTrafficSources(): Promise<{ total: number; sources: { source: string; count: number }[] }> {
+    return this.fetch('/analytics/traffic-sources')
+  }
+
+  // AI Style Chat
+  async chat(messages: { role: string; content: string }[]): Promise<{ reply: string }> {
+    return this.fetch('/ai/chat', {
+      method: 'POST',
+      body: JSON.stringify({ messages }),
+    })
+  }
+
   // Actions
   async createDraftOrder(
     lineItems: { variant_id: string; quantity: number }[]

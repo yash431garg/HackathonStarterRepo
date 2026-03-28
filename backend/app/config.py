@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     SIMULATOR_INTERVAL_MIN: int = 60
     SIMULATOR_INTERVAL_MAX: int = 180
     DATABASE_URL: str = f"sqlite+aiosqlite:///{_repo_root}/hackathon.db"
+    ANTHROPIC_API_KEY: str = ""
 
     model_config = {
         "env_file": _env_file,

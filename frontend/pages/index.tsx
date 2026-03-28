@@ -4,6 +4,7 @@ import KPICard from '../components/KPICard'
 import Card from '../components/ui/Card'
 import LineChart from '../components/charts/LineChart'
 import BarChart from '../components/charts/BarChart'
+import DonutChart from '../components/charts/DonutChart'
 import LiveFeed from '../components/LiveFeed'
 import { useApi } from '../hooks/useApi'
 import { useRevenue, useTopProducts } from '../hooks/useAnalytics'
@@ -24,13 +25,16 @@ const MOCK_STORE: StoreInfo = {
 }
 
 function generateMockRevenue(): RevenueDataPoint[] {
+  // Deterministic pseudo-random so server and client produce identical output
+  const bases = [3241, 2987, 3812, 2654, 3590, 4012, 3187, 2843, 3654, 4201, 3087, 2765, 3921, 3456, 2987, 3812, 4123, 3087, 2654, 3765, 4012, 3543, 2876, 3654, 3987, 4201, 3123, 2843, 3765, 4087]
+  const orderCounts = [24, 19, 28, 18, 26, 30, 22, 20, 27, 31, 21, 19, 29, 25, 20, 28, 32, 22, 18, 27, 30, 26, 20, 27, 29, 32, 23, 21, 28, 31]
   const data: RevenueDataPoint[] = []
-  const now = new Date()
+  const anchor = new Date('2026-03-28')
   for (let i = 29; i >= 0; i--) {
-    const d = new Date(now)
+    const d = new Date(anchor)
     d.setDate(d.getDate() - i)
-    const base = 2800 + Math.random() * 1200
-    const orders = 18 + Math.floor(Math.random() * 15)
+    const base = bases[29 - i]
+    const orders = orderCounts[29 - i]
     data.push({
       date: d.toISOString().split('T')[0],
       revenue: Math.round(base * 100) / 100,
@@ -52,14 +56,14 @@ const MOCK_TOP_PRODUCTS: TopProduct[] = [
 ]
 
 const MOCK_EVENTS: LiveEvent[] = [
-  { id: '1', event_type: 'new_order', payload: { order_number: '1042', total_price: 259.99 }, created_at: new Date(Date.now() - 60000).toISOString() },
-  { id: '2', event_type: 'customer_created', payload: { email: 'sarah@example.com' }, created_at: new Date(Date.now() - 180000).toISOString() },
-  { id: '3', event_type: 'new_order', payload: { order_number: '1041', total_price: 149.50 }, created_at: new Date(Date.now() - 300000).toISOString() },
-  { id: '4', event_type: 'inventory_change', payload: { product_title: 'Complete Snowboard' }, created_at: new Date(Date.now() - 420000).toISOString() },
-  { id: '5', event_type: 'new_order', payload: { order_number: '1040', total_price: 89.99 }, created_at: new Date(Date.now() - 600000).toISOString() },
-  { id: '6', event_type: 'product_update', payload: { title: 'Hydrogen Snowboard' }, created_at: new Date(Date.now() - 900000).toISOString() },
-  { id: '7', event_type: 'refund_issued', payload: { order_number: '1035' }, created_at: new Date(Date.now() - 1200000).toISOString() },
-  { id: '8', event_type: 'new_order', payload: { order_number: '1039', total_price: 324.00 }, created_at: new Date(Date.now() - 1500000).toISOString() },
+  { id: '1', event_type: 'new_order', payload: { order_number: '1042', total_price: 259.99 }, created_at: '2026-03-28T09:59:00Z' },
+  { id: '2', event_type: 'customer_created', payload: { email: 'sarah@example.com' }, created_at: '2026-03-28T09:57:00Z' },
+  { id: '3', event_type: 'new_order', payload: { order_number: '1041', total_price: 149.50 }, created_at: '2026-03-28T09:55:00Z' },
+  { id: '4', event_type: 'inventory_change', payload: { product_title: 'Complete Snowboard' }, created_at: '2026-03-28T09:53:00Z' },
+  { id: '5', event_type: 'new_order', payload: { order_number: '1040', total_price: 89.99 }, created_at: '2026-03-28T09:50:00Z' },
+  { id: '6', event_type: 'product_update', payload: { title: 'Hydrogen Snowboard' }, created_at: '2026-03-28T09:45:00Z' },
+  { id: '7', event_type: 'refund_issued', payload: { order_number: '1035' }, created_at: '2026-03-28T09:40:00Z' },
+  { id: '8', event_type: 'new_order', payload: { order_number: '1039', total_price: 324.00 }, created_at: '2026-03-28T09:35:00Z' },
 ]
 
 // ── Page Component ─────────────────────────────────────────────────────────
@@ -70,6 +74,7 @@ export default function DashboardPage() {
   const { data: storeData, error: storeError } = useApi(() => api.getStore(), [])
   const { data: revenueData, error: revenueError } = useRevenue('30d')
   const { data: topData, error: topError } = useTopProducts(5)
+  const { data: trafficData } = useApi(() => api.getTrafficSources(), [])
 
   // Determine if we should use mock data
   const isMock = useMock || !!(storeError && revenueError)
@@ -154,17 +159,41 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* Top Products */}
-      <Card title="Top Products" subtitle="By revenue">
-        <BarChart
-          data={topProducts.map((p) => ({
-            label: p.title,
-            value: p.revenue,
-          }))}
-          height={180}
-          horizontal
-        />
-      </Card>
+      {/* Top Products + Traffic Sources */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="col-span-2">
+          <Card title="Top Products" subtitle="By revenue">
+            <BarChart
+              data={topProducts.map((p) => ({
+                label: p.title,
+                value: p.revenue,
+              }))}
+              height={180}
+              horizontal
+            />
+          </Card>
+        </div>
+
+        <Card title="Traffic Sources" subtitle={trafficData ? `${trafficData.total} visitors` : 'Waiting for visitors'}>
+          {trafficData && trafficData.sources.length > 0 ? (
+            <DonutChart
+              size={140}
+              segments={trafficData.sources.map((s, i) => ({
+                label: s.source,
+                value: s.count,
+                color: ['#E1306C','#4285F4','#69C9D0','#00FF94','#1877F2','#A78BFA','#F59E0B','#6B7280'][i % 8],
+              }))}
+              centerLabel="visitors"
+              centerValue={String(trafficData.total)}
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-32 text-center">
+              <p className="text-xs text-text-tertiary">No data yet</p>
+              <p className="text-xs text-text-tertiary mt-1">Visitors will appear here as they answer the welcome question</p>
+            </div>
+          )}
+        </Card>
+      </div>
     </Shell>
   )
 }

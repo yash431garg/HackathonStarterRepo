@@ -77,9 +77,8 @@ export default function LiveFeed({ maxEvents = 20, mockEvents }: LiveFeedProps) 
         <h3 className="text-sm font-medium text-text-primary">Live Feed</h3>
         <div className="flex items-center gap-1.5">
           <span
-            className={`w-1.5 h-1.5 rounded-full ${
-              connected ? 'bg-status-success' : 'bg-status-error'
-            }`}
+            className={`w-1.5 h-1.5 rounded-full ${connected ? 'bg-status-success' : 'bg-status-error'
+              }`}
           />
           <span className="text-xs text-text-tertiary">
             {connected ? 'Connected' : 'Offline'}
@@ -104,7 +103,7 @@ export default function LiveFeed({ maxEvents = 20, mockEvents }: LiveFeedProps) 
                 <p className="text-xs text-text-primary truncate">
                   {getEventDescription(event)}
                 </p>
-                <p className="text-xs text-text-tertiary">
+                <p className="text-xs text-text-tertiary" suppressHydrationWarning>
                   {timeAgo(event.created_at)}
                 </p>
               </div>

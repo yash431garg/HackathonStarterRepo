@@ -44,6 +44,16 @@ const navItems = [
       </svg>
     ),
   },
+  {
+    href: '/ceo',
+    label: 'AI CEO',
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.3" />
+        <path d="M6 8.5l1.5 1.5L10.5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
 ]
 
 export default function Shell({ title, children }: ShellProps) {
@@ -54,10 +64,17 @@ export default function Shell({ title, children }: ShellProps) {
       {/* Sidebar */}
       <aside className="w-60 bg-surface-1 border-r border-border flex flex-col flex-shrink-0">
         {/* Logo */}
-        <div className="px-4 py-4 border-b border-border">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-accent" />
-            <span className="text-sm font-semibold text-text-primary">Shopify App</span>
+        <div className="px-4 py-5 border-b border-border">
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 7h10M7 2l5 5-5 5" stroke="#0A0A0B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-bold text-text-primary tracking-tight">Growzilla</p>
+              <p className="text-xs text-text-tertiary" style={{ fontSize: '10px' }}>Commerce Intelligence</p>
+            </div>
           </div>
         </div>
 
@@ -99,16 +116,17 @@ export default function Shell({ title, children }: ShellProps) {
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Topbar */}
-        <header className="h-12 bg-surface-1 border-b border-border flex items-center justify-between px-5 flex-shrink-0">
-          <h1 className="text-sm font-medium text-text-primary">{title}</h1>
+        <header className="h-14 bg-surface-1 border-b border-border flex items-center justify-between px-6 flex-shrink-0">
+          <h1 className="text-base font-bold text-text-primary tracking-tight">{title}</h1>
           {STORE_URL && (
             <a
-              href={`${STORE_URL}/admin`}
+              href={`https://${STORE_URL}/admin`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-text-tertiary hover:text-text-secondary transition-colors duration-150 ease-out"
+              className="flex items-center gap-1.5 text-xs text-text-tertiary hover:text-text-secondary transition-colors duration-150 ease-out"
             >
-              Store Admin &rarr;
+              <span className="w-1.5 h-1.5 rounded-full bg-status-success" />
+              {STORE_URL}
             </a>
           )}
         </header>
