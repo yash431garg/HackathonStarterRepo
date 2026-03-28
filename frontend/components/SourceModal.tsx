@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { api } from '../lib/api'
 
 const SOURCES = [
-  { label: 'Google Ads', icon: '🔍', color: '#4285F4' },
-  { label: 'Instagram', icon: '📸', color: '#E1306C' },
-  { label: 'TikTok', icon: '🎵', color: '#69C9D0' },
-  { label: 'Facebook', icon: '👤', color: '#1877F2' },
-  { label: 'Twitter / X', icon: '🐦', color: '#1DA1F2' },
-  { label: 'Friend / Word of mouth', icon: '💬', color: '#00FF94' },
-  { label: 'Direct / Typed URL', icon: '🌐', color: '#A78BFA' },
-  { label: 'Other', icon: '✨', color: '#6B7280' },
+  { label: 'Google Ads', icon: '🔍' },
+  { label: 'Instagram', icon: '📸' },
+  { label: 'TikTok', icon: '🎵' },
+  { label: 'Facebook', icon: '👤' },
+  { label: 'Twitter / X', icon: '🐦' },
+  { label: 'Friend / Word of mouth', icon: '💬' },
+  { label: 'Direct / Typed URL', icon: '🌐' },
+  { label: 'Other', icon: '✨' },
 ]
 
 export default function SourceModal() {
   const [visible, setVisible] = useState(false)
   const [selected, setSelected] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
-    // Show once per session
     if (!sessionStorage.getItem('source_asked')) {
       setTimeout(() => setVisible(true), 800)
     }
@@ -29,7 +30,10 @@ export default function SourceModal() {
     sessionStorage.setItem('source_asked', '1')
     setSubmitted(true)
     await api.trackSource(selected)
-    setTimeout(() => setVisible(false), 1000)
+    setTimeout(() => {
+      setVisible(false)
+      router.push('/products')
+    }, 1000)
   }
 
   function skip() {
@@ -40,46 +44,69 @@ export default function SourceModal() {
   if (!visible) return null
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
-      <div className="bg-surface-1 border border-border rounded-xl p-6 w-full max-w-sm shadow-2xl">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)' }}>
+      <div style={{ background: '#0C0E14', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '28px', width: '100%', maxWidth: '420px', boxShadow: '0 24px 64px rgba(0,0,0,0.6)' }}>
         {submitted ? (
-          <div className="flex flex-col items-center py-4">
-            <span className="text-2xl mb-2">✓</span>
-            <p className="text-sm font-medium text-text-primary">Thanks!</p>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '24px 0' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(0,255,148,0.1)', border: '1px solid rgba(0,255,148,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
+              <span style={{ color: '#00FF94', fontSize: '20px' }}>✓</span>
+            </div>
+            <p style={{ fontSize: '15px', fontWeight: 700, color: 'rgba(255,255,255,0.95)', fontFamily: 'Sora, sans-serif' }}>Thanks! Taking you to our products...</p>
           </div>
         ) : (
           <>
-            <h2 className="text-sm font-semibold text-text-primary mb-1">Welcome! Quick question</h2>
-            <p className="text-xs text-text-tertiary mb-4">How did you find us today?</p>
+            <div style={{ marginBottom: '20px' }}>
+              <p style={{ fontSize: '11px', fontWeight: 600, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>Welcome</p>
+              <h2 style={{ fontSize: '20px', fontWeight: 800, color: 'rgba(255,255,255,0.95)', letterSpacing: '-0.02em', fontFamily: 'Sora, sans-serif', marginBottom: '4px' }}>
+                How did you find us?
+              </h2>
+              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.35)' }}>Help us understand where our customers come from</p>
+            </div>
 
-            <div className="grid grid-cols-2 gap-2 mb-4">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '20px' }}>
               {SOURCES.map(s => (
                 <button
                   key={s.label}
                   onClick={() => setSelected(s.label)}
-                  className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border text-xs text-left transition-all duration-150 ${
-                    selected === s.label
-                      ? 'border-accent bg-accent/10 text-text-primary'
-                      : 'border-border bg-surface-2 text-text-secondary hover:border-border/60 hover:text-text-primary'
-                  }`}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    padding: '12px 14px', borderRadius: '10px', textAlign: 'left',
+                    cursor: 'pointer', transition: 'all 150ms ease',
+                    background: selected === s.label ? 'rgba(0,255,148,0.08)' : 'rgba(255,255,255,0.03)',
+                    border: `1px solid ${selected === s.label ? 'rgba(0,255,148,0.3)' : 'rgba(255,255,255,0.07)'}`,
+                    fontFamily: 'Sora, sans-serif',
+                  }}
                 >
-                  <span>{s.icon}</span>
-                  <span className="truncate">{s.label}</span>
+                  <span style={{ fontSize: '18px' }}>{s.icon}</span>
+                  <span style={{ fontSize: '12px', fontWeight: 500, color: selected === s.label ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.55)' }}>
+                    {s.label}
+                  </span>
                 </button>
               ))}
             </div>
 
-            <div className="flex gap-2">
+            <div style={{ display: 'flex', gap: '8px' }}>
               <button
                 onClick={submit}
                 disabled={!selected}
-                className="flex-1 py-2 rounded-lg bg-accent text-surface-0 text-xs font-medium disabled:opacity-40 hover:bg-accent/90 transition-colors"
+                style={{
+                  flex: 1, padding: '12px', borderRadius: '10px',
+                  background: selected ? '#00FF94' : 'rgba(0,255,148,0.2)',
+                  color: selected ? '#080A0F' : 'rgba(255,255,255,0.3)',
+                  fontSize: '13px', fontWeight: 700, cursor: selected ? 'pointer' : 'not-allowed',
+                  border: 'none', transition: 'all 150ms ease', fontFamily: 'Sora, sans-serif',
+                }}
               >
-                Continue
+                Continue →
               </button>
               <button
                 onClick={skip}
-                className="px-4 py-2 rounded-lg bg-surface-2 border border-border text-xs text-text-secondary hover:text-text-primary transition-colors"
+                style={{
+                  padding: '12px 16px', borderRadius: '10px',
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                  color: 'rgba(255,255,255,0.35)', fontSize: '12px', cursor: 'pointer',
+                  transition: 'all 150ms ease', fontFamily: 'Sora, sans-serif',
+                }}
               >
                 Skip
               </button>

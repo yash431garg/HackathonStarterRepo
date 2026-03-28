@@ -91,7 +91,7 @@ export default function StyleChat() {
     <>
       {/* Chat window */}
       {open && (
-        <div className="fixed bottom-20 right-5 z-50 w-80 flex flex-col bg-surface-1 border border-border rounded-xl shadow-2xl overflow-hidden" style={{ height: '480px' }}>
+        <div className="fixed bottom-20 right-5 z-50 flex flex-col bg-surface-1 border border-border rounded-xl shadow-2xl overflow-hidden" style={{ width: '400px', height: '580px' }}>
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-surface-2 flex-shrink-0">
             <div className="flex items-center gap-2">
