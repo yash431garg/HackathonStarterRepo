@@ -29,10 +29,10 @@ interface StoreData {
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
-const PRIORITY_BADGE: Record<string, 'error' | 'warning' | 'default'> = {
+const PRIORITY_BADGE: Record<string, 'error' | 'warning' | 'neutral'> = {
   critical: 'error',
   high: 'warning',
-  medium: 'default',
+  medium: 'neutral',
 }
 
 const CATEGORY_ICON: Record<string, string> = {
@@ -231,7 +231,7 @@ export default function CEOPage() {
                       {/* Title row */}
                       <div className="flex items-center gap-2 mb-1.5">
                         <span className="text-xs font-semibold text-text-primary">{rec.title}</span>
-                        <Badge variant={PRIORITY_BADGE[rec.priority] || 'default'}>
+                        <Badge variant={PRIORITY_BADGE[rec.priority] || 'neutral'}>
                           {rec.priority}
                         </Badge>
                         <span className="text-xs text-text-tertiary capitalize">{rec.category}</span>
