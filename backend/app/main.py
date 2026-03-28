@@ -31,6 +31,7 @@ from app.routers import (
     ai,
     chat,
     traffic,
+    seed,
 )
 
 logging.basicConfig(
@@ -122,6 +123,7 @@ app.include_router(shopify_proxy.router)
 app.include_router(ai.router)
 app.include_router(chat.router)
 app.include_router(traffic.router)
+app.include_router(seed.router)
 
 
 @app.get("/health")
