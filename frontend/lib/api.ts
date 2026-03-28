@@ -126,6 +126,11 @@ class ApiClient {
     return this.fetch('/ai/analyze')
   }
 
+  // Inventory predictions
+  async getPredictions(): Promise<any> {
+    return this.fetch('/analytics/predictions')
+  }
+
   // Traffic sources
   async trackSource(source: string): Promise<any> {
     return this.fetch('/analytics/track-source', {

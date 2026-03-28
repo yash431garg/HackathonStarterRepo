@@ -32,6 +32,7 @@ from app.routers import (
     chat,
     traffic,
     seed,
+    predictions,
 )
 
 logging.basicConfig(
@@ -124,6 +125,7 @@ app.include_router(ai.router)
 app.include_router(chat.router)
 app.include_router(traffic.router)
 app.include_router(seed.router)
+app.include_router(predictions.router)
 
 
 @app.get("/health")

@@ -45,6 +45,16 @@ const navItems = [
     ),
   },
   {
+    href: '/predictions',
+    label: 'Inventory',
+    icon: (
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <path d="M2 11l3-4 3 2 3-5 2 3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M1.5 13.5h12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
     href: '/ceo',
     label: 'AI CEO',
     icon: (
