@@ -88,8 +88,8 @@ export default function Shell({ title, children }: ShellProps) {
               </svg>
             </div>
             <div>
-              <p style={{ fontSize: '14px', fontWeight: 700, color: 'rgba(255,255,255,0.95)', letterSpacing: '-0.02em', fontFamily: 'Sora, sans-serif' }}>Growzilla</p>
-              <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: '1px' }}>Commerce AI</p>
+              <p style={{ fontSize: '14px', fontWeight: 700, color: 'rgba(255,255,255,0.95)', letterSpacing: '-0.02em', fontFamily: 'Sora, sans-serif' }}>Smart Shopify</p>
+              <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: '1px' }}>Experience</p>
             </div>
           </div>
         </div>
