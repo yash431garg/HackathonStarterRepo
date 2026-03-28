@@ -93,52 +93,44 @@ export default function DashboardPage() {
   const secondHalf = revenue.slice(half).reduce((s, d) => s + d.revenue, 0)
   const revenueChange = firstHalf > 0 ? ((secondHalf - firstHalf) / firstHalf) * 100 : 0
 
-  return (
-    <Shell title="Dashboard">
-      {/* Mock banner */}
-      {isMock && (
-        <div className="bg-status-warning/10 border border-status-warning/20 rounded-lg px-4 py-2 mb-4 flex items-center justify-between">
-          <span className="text-xs text-status-warning">
-            Using demo data — connect to The Pipe for live data
-          </span>
-          <button
-            onClick={() => setUseMock(false)}
-            className="text-xs text-text-tertiary hover:text-text-secondary"
-          >
-            Dismiss
-          </button>
-        </div>
-      )}
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
 
-      {/* KPI Row */}
-      <div className="grid grid-cols-4 gap-4 mb-5">
-        <KPICard
-          title="Total Revenue"
-          value={formatCurrency(totalRevenue)}
-          change={revenueChange}
-        />
-        <KPICard
-          title="Total Orders"
-          value={formatNumber(totalOrders)}
-          change={8.2}
-        />
-        <KPICard
-          title="Avg Order Value"
-          value={formatCurrency(avgAOV)}
-          change={-2.1}
-        />
-        <KPICard
-          title="Customers"
-          value={formatNumber(store.customer_count)}
-          change={12.4}
-        />
+  return (
+    <Shell title="Overview">
+      {/* Page header */}
+      <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <div>
+          <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '4px' }}>Store Intelligence</p>
+          <h2 style={{ fontSize: '22px', fontWeight: 800, color: 'rgba(255,255,255,0.95)', letterSpacing: '-0.03em', fontFamily: 'Sora, sans-serif' }}>
+            Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'} ☀️
+          </h2>
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.3)', marginTop: '2px' }}>{today}</p>
+        </div>
+        {isMock && (
+          <div style={{ background: 'rgba(255,180,0,0.08)', border: '1px solid rgba(255,180,0,0.2)', borderRadius: '8px', padding: '6px 12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ fontSize: '11px', color: 'rgba(255,180,0,0.8)' }}>Demo data</span>
+          </div>
+        )}
       </div>
 
+      {/* Section label */}
+      <p style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '12px' }}>Key Metrics — Last 30 days</p>
+
+      {/* KPI Row */}
+      <div className="grid grid-cols-4 gap-4 mb-6 animate-fade-up-1">
+        <KPICard title="Total Revenue" value={formatCurrency(totalRevenue)} change={revenueChange} />
+        <KPICard title="Total Orders" value={formatNumber(totalOrders)} change={8.2} />
+        <KPICard title="Avg Order Value" value={formatCurrency(avgAOV)} change={-2.1} />
+        <KPICard title="Customers" value={formatNumber(store.customer_count)} change={12.4} />
+      </div>
+
+      {/* Section label */}
+      <p style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '12px' }}>Revenue & Activity</p>
+
       {/* Charts + Feed */}
-      <div className="grid grid-cols-3 gap-4 mb-5">
-        {/* Revenue chart - 2/3 */}
+      <div className="grid grid-cols-3 gap-4 mb-6 animate-fade-up-2">
         <div className="col-span-2">
-          <Card title="Revenue" subtitle="Last 30 days">
+          <Card title="Revenue Trend" subtitle="Daily revenue over the last 30 days">
             <LineChart
               data={revenue.map((d) => ({
                 label: new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
@@ -152,29 +144,26 @@ export default function DashboardPage() {
             />
           </Card>
         </div>
-
-        {/* Live feed - 1/3 */}
-        <Card className="min-h-[280px]">
+        <Card>
           <LiveFeed maxEvents={20} mockEvents={isMock ? MOCK_EVENTS : undefined} />
         </Card>
       </div>
 
+      {/* Section label */}
+      <p style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.2)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '12px' }}>Products & Acquisition</p>
+
       {/* Top Products + Traffic Sources */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-4 animate-fade-up-3">
         <div className="col-span-2">
-          <Card title="Top Products" subtitle="By revenue">
+          <Card title="Top Products" subtitle="Ranked by revenue generated">
             <BarChart
-              data={topProducts.map((p) => ({
-                label: p.title,
-                value: p.revenue,
-              }))}
+              data={topProducts.map((p) => ({ label: p.title, value: p.revenue }))}
               height={180}
               horizontal
             />
           </Card>
         </div>
-
-        <Card title="Traffic Sources" subtitle={trafficData ? `${trafficData.total} visitors` : 'Waiting for visitors'}>
+        <Card title="Traffic Sources" subtitle={trafficData ? `${trafficData.total} total visitors` : 'Waiting for visitors'}>
           {trafficData && trafficData.sources.length > 0 ? (
             <DonutChart
               size={140}
@@ -187,9 +176,12 @@ export default function DashboardPage() {
               centerValue={String(trafficData.total)}
             />
           ) : (
-            <div className="flex flex-col items-center justify-center h-32 text-center">
-              <p className="text-xs text-text-tertiary">No data yet</p>
-              <p className="text-xs text-text-tertiary mt-1">Visitors will appear here as they answer the welcome question</p>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '120px', textAlign: 'center' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '8px' }}>
+                <span style={{ fontSize: '14px' }}>📡</span>
+              </div>
+              <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>No data yet</p>
+              <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.2)', marginTop: '4px' }}>Sources appear as visitors answer the welcome prompt</p>
             </div>
           )}
         </Card>

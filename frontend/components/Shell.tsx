@@ -12,13 +12,13 @@ interface ShellProps {
 const navItems = [
   {
     href: '/',
-    label: 'Dashboard',
+    label: 'Overview',
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
-        <rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
-        <rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
-        <rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.3" />
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <rect x="1.5" y="1.5" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="8.5" y="1.5" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="1.5" y="8.5" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="8.5" y="8.5" width="5" height="5" rx="1" stroke="currentColor" strokeWidth="1.2" />
       </svg>
     ),
   },
@@ -26,10 +26,10 @@ const navItems = [
     href: '/products',
     label: 'Products',
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.3" />
-        <path d="M2 6h12" stroke="currentColor" strokeWidth="1.3" />
-        <path d="M6 6v7" stroke="currentColor" strokeWidth="1.3" />
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <rect x="1.5" y="2.5" width="12" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
+        <path d="M1.5 6h12" stroke="currentColor" strokeWidth="1.2" />
+        <path d="M5.5 6v6.5" stroke="currentColor" strokeWidth="1.2" />
       </svg>
     ),
   },
@@ -37,10 +37,10 @@ const navItems = [
     href: '/orders',
     label: 'Orders',
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path d="M4 2h8l2 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V6l2-4z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
-        <path d="M2 6h12" stroke="currentColor" strokeWidth="1.3" />
-        <path d="M6 9h4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <path d="M3.5 1.5h8l2 4v7a1 1 0 01-1 1h-10a1 1 0 01-1-1v-7l2-4z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+        <path d="M1.5 5.5h12" stroke="currentColor" strokeWidth="1.2" />
+        <path d="M5.5 8.5h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
       </svg>
     ),
   },
@@ -48,11 +48,12 @@ const navItems = [
     href: '/ceo',
     label: 'AI CEO',
     icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.3" />
-        <path d="M6 8.5l1.5 1.5L10.5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" strokeWidth="1.2" />
+        <path d="M5 8l2 2 3.5-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
+    accent: true,
   },
 ]
 
@@ -60,53 +61,83 @@ export default function Shell({ title, children }: ShellProps) {
   const router = useRouter()
 
   return (
-    <div className="flex h-screen bg-surface-0">
+    <div className="flex h-screen" style={{ background: '#080A0F' }}>
       {/* Sidebar */}
-      <aside className="w-60 bg-surface-1 border-r border-border flex flex-col flex-shrink-0">
+      <aside style={{ width: '220px', background: '#0C0E14', borderRight: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }} className="flex flex-col">
+
         {/* Logo */}
-        <div className="px-4 py-5 border-b border-border">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
+        <div style={{ padding: '20px 16px 16px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="flex items-center gap-3">
+            <div style={{
+              width: '32px', height: '32px', borderRadius: '8px',
+              background: 'linear-gradient(135deg, #00FF94 0%, #00CC77 100%)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+            }}>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 7h10M7 2l5 5-5 5" stroke="#0A0A0B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2 7h10M7 2l5 5-5 5" stroke="#080A0F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
             <div>
-              <p className="text-sm font-bold text-text-primary tracking-tight">Growzilla</p>
-              <p className="text-xs text-text-tertiary" style={{ fontSize: '10px' }}>Commerce Intelligence</p>
+              <p style={{ fontSize: '14px', fontWeight: 700, color: 'rgba(255,255,255,0.95)', letterSpacing: '-0.02em', fontFamily: 'Sora, sans-serif' }}>Growzilla</p>
+              <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: '1px' }}>Commerce AI</p>
             </div>
           </div>
         </div>
 
+        {/* Nav label */}
+        <div style={{ padding: '16px 16px 6px' }}>
+          <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>Navigation</p>
+        </div>
+
         {/* Navigation */}
-        <nav className="flex-1 px-2 py-3 space-y-0.5">
+        <nav style={{ flex: 1, padding: '0 8px 16px' }}>
           {navItems.map((item) => {
             const active = router.pathname === item.href
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={cn(
-                  'flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors duration-150 ease-out',
-                  active
-                    ? 'bg-surface-2 text-text-primary border-l-2 border-accent'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-surface-2/50'
-                )}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '8px 10px',
+                  borderRadius: '8px',
+                  marginBottom: '2px',
+                  fontSize: '13px',
+                  fontWeight: active ? 600 : 400,
+                  color: active ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.45)',
+                  background: active ? 'rgba(255,255,255,0.06)' : 'transparent',
+                  borderLeft: active ? '2px solid #00FF94' : '2px solid transparent',
+                  transition: 'all 150ms ease-out',
+                  textDecoration: 'none',
+                  fontFamily: 'Sora, sans-serif',
+                }}
+                onMouseEnter={e => { if (!active) { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.03)' } }}
+                onMouseLeave={e => { if (!active) { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.45)'; (e.currentTarget as HTMLElement).style.background = 'transparent' } }}
               >
-                <span className={active ? 'text-accent' : 'text-text-tertiary'}>
+                <span style={{ color: active ? '#00FF94' : 'rgba(255,255,255,0.3)', flexShrink: 0 }}>
                   {item.icon}
                 </span>
                 {item.label}
+                {item.accent && (
+                  <span style={{
+                    marginLeft: 'auto', fontSize: '9px', fontWeight: 600,
+                    color: '#00FF94', background: 'rgba(0,255,148,0.1)',
+                    padding: '2px 6px', borderRadius: '4px', letterSpacing: '0.05em',
+                    textTransform: 'uppercase'
+                  }}>AI</span>
+                )}
               </Link>
             )
           })}
         </nav>
 
-        {/* Footer */}
-        <div className="px-4 py-3 border-t border-border">
+        {/* Store status */}
+        <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-status-success" />
-            <span className="text-xs text-text-tertiary truncate">
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#00FF94', display: 'block', boxShadow: '0 0 6px rgba(0,255,148,0.5)' }} />
+            <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {STORE_URL || 'No store connected'}
             </span>
           </div>
@@ -116,23 +147,38 @@ export default function Shell({ title, children }: ShellProps) {
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Topbar */}
-        <header className="h-14 bg-surface-1 border-b border-border flex items-center justify-between px-6 flex-shrink-0">
-          <h1 className="text-base font-bold text-text-primary tracking-tight">{title}</h1>
+        <header style={{
+          height: '52px', background: '#0C0E14',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '0 24px', flexShrink: 0
+        }}>
+          <div className="flex items-center gap-3">
+            <h1 style={{ fontSize: '15px', fontWeight: 700, color: 'rgba(255,255,255,0.95)', letterSpacing: '-0.02em', fontFamily: 'Sora, sans-serif' }}>
+              {title}
+            </h1>
+          </div>
           {STORE_URL && (
             <a
               href={`https://${STORE_URL}/admin`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs text-text-tertiary hover:text-text-secondary transition-colors duration-150 ease-out"
+              style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                fontSize: '11px', color: 'rgba(255,255,255,0.3)',
+                textDecoration: 'none', transition: 'color 150ms ease-out'
+              }}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-status-success" />
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#00FF94', display: 'block' }} />
               {STORE_URL}
             </a>
           )}
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-y-auto p-5">{children}</main>
+        <main className="flex-1 overflow-y-auto dot-grid" style={{ padding: '24px' }}>
+          {children}
+        </main>
       </div>
     </div>
   )

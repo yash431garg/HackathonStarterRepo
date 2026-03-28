@@ -1,5 +1,4 @@
 import React from 'react'
-import { cn } from '../../lib/utils'
 
 interface CardProps {
   children: React.ReactNode
@@ -12,19 +11,30 @@ interface CardProps {
 export default function Card({ children, title, subtitle, className, action }: CardProps) {
   return (
     <div
-      className={cn(
-        'bg-surface-1 border border-border rounded-lg p-4',
-        className
-      )}
+      className={className}
+      style={{
+        background: '#0C0E14',
+        border: '1px solid rgba(255,255,255,0.06)',
+        borderRadius: '12px',
+        padding: '20px',
+      }}
     >
       {(title || action) && (
-        <div className="flex items-center justify-between mb-3">
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div>
             {title && (
-              <h3 className="text-sm font-medium text-text-primary">{title}</h3>
+              <h3 style={{
+                fontSize: '13px', fontWeight: 700,
+                color: 'rgba(255,255,255,0.9)', letterSpacing: '-0.01em',
+                fontFamily: 'Sora, sans-serif',
+              }}>
+                {title}
+              </h3>
             )}
             {subtitle && (
-              <p className="text-xs text-text-tertiary mt-0.5">{subtitle}</p>
+              <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginTop: '2px', fontFamily: 'Sora, sans-serif' }}>
+                {subtitle}
+              </p>
             )}
           </div>
           {action && <div>{action}</div>}
